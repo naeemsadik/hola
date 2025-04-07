@@ -1,50 +1,101 @@
-# Welcome to your Expo app 👋
+# Hola - Language Learning App 🌍📚
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+![App Preview](https://via.placeholder.com/800x400?text=Hola+App+Screenshots)
 
-## Get started
+A modern flashcard-based language learning application built with React Native and Expo, designed to help users master new vocabulary through interactive exercises.
 
-1. Install dependencies
+## Features ✨
+- **Interactive Flashcards**: Flip cards for translations
+- **Progress Tracking**: Visual progress bar and card counter
+- **Bilingual Examples**: Example sentences with translations
+- **Dark Mode**: Eye-friendly dark theme
+- **Spaced Repetition**: "Retry" and "Save" features for difficult cards
+- **Multi-Language Support**: Built-in localization system
+- **Audio Integration**: Pronunciation guides (placeholder)
+- **Progress Statistics**: Track learning milestones
 
-   ```bash
-   npm install
-   ```
+## Prerequisites 📋
+- Node.js (v18+)
+- npm (v9+)
+- Expo CLI
+- Android Studio (for local builds)
+- Expo account
 
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
+## Installation 🛠️
+1. Clone the repository:
 ```bash
-npm run reset-project
+git clone https://github.com/naeemsadik/hola-app.git
+cd hola-app
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Install dependencies:
+```bash
+npm install
+```
 
-## Learn more
+3. Start the development server:
+```bash
+expo start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+## Usage 📱
+### Basic Navigation
+- **Home Screen**: Swipe through flashcards
+  - Tap card to flip (word ↔ translation)
+  - Use ←/→ buttons to navigate
+- **Settings**: Adjust preferences and app behavior
+  - Toggle dark mode
+  - Set daily reminders
+  - Configure learning language
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Key Commands
+| Action                | Command           |
+|-----------------------|-------------------|
+| Start dev server      | `expo start`      |
+| Android emulator      | `expo run:android`|
+| iOS simulator         | `expo run:ios`    |
+| Production build      | `eas build`       |
 
-## Join the community
+## Building the APK 📦
+1. Configure EAS:
+```bash
+eas build:configure
+```
 
-Join our community of developers creating universal apps.
+2. Build Android APK:
+```bash
+eas build --platform android --profile apk
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+3. Download built APK from [Expo Dashboard](https://expo.dev)
+
+## Project Structure 📂
+```
+hola-app/
+├── assets/           # Media resources
+├── app/              # Core application
+│   ├── components/   # Reusable components
+│   ├── constants/    # Styles & configuration
+│   └── navigation/   # Routing logic
+├── eas.json          # Build configuration
+└── app.json          # Expo metadata
+```
+
+## Contributing 🤝
+1. Fork the repository
+2. Create feature branch:
+```bash
+git checkout -b feature/amazing-feature
+```
+3. Commit changes
+4. Push to branch
+5. Open pull request
+
+## License 📄
+MIT License - See [LICENSE](LICENSE) for details
+
+## Acknowledgments 🙏
+- Built with [Expo](https://expo.dev)
+- UI components from [React Native Elements](https://reactnativeelements.com)
+- Icons by [Ionicons](https://ionicons.com)
+
