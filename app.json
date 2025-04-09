@@ -2,7 +2,7 @@
   "expo": {
     "name": "hola",
     "slug": "learnLanguage",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -59,7 +59,8 @@
       },
       "eas": {
         "projectId": "acf16898-5364-488a-8011-7ba0b2f952df"
-      }
+      },
+      "expoPublicGroqApiKey": "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"
     }
   }
 }

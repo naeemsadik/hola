@@ -5,17 +5,40 @@ import {
   TouchableOpacity,
   Animated,
   Easing,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { indexStyles as styles } from "@/constants/styles";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/constants/theme";
+import { cardData, cardDataReady } from "@/constants/cardData";
 
 export default function Index() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [currentCard, setCurrentCard] = useState(1);
-  const [totalCards] = useState(50);
+  const [totalCards, setTotalCards] = useState(0);
+  const [loading, setLoading] = useState(true);
   const flipAnimation = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    let isMounted = true; // Track if the component is mounted
+
+    // Wait for `cardData` to be populated
+    cardDataReady
+      .then(() => {
+        if (isMounted) {
+          setTotalCards(cardData.length);
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Error loading flashcards:", error);
+      });
+
+    return () => {
+      isMounted = false; // Cleanup to prevent state updates after unmount
+    };
+  }, []);
 
   const flipCard = () => {
     Animated.timing(flipAnimation, {
@@ -46,6 +69,38 @@ export default function Index() {
     transform: [{ rotateY: backInterpolate }],
   };
 
+  const handleRetry = () => {
+    setIsFlipped(false);
+    flipAnimation.setValue(0);
+  };
+
+  const handleNextCard = () => {
+    if (currentCard < totalCards) {
+      setCurrentCard(currentCard + 1);
+      setIsFlipped(false);
+      flipAnimation.setValue(0);
+    }
+  };
+
+  const handlePrevCard = () => {
+    if (currentCard > 1) {
+      setCurrentCard(currentCard - 1);
+      setIsFlipped(false);
+      flipAnimation.setValue(0);
+    }
+  };
+
+  const currentCardData = cardData.find((card) => card.id === currentCard) || cardData[0];
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={COLORS.primary} />
+        <Text style={styles.loadingText}>Loading flashcards...</Text>
+      </View>
+    );
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       {/* Header Section */}
@@ -69,14 +124,9 @@ export default function Index() {
         <TouchableOpacity activeOpacity={0.9} onPress={flipCard}>
           <Animated.View style={[styles.card, frontAnimatedStyle]}>
             <View style={styles.cardContent}>
-              <Text style={styles.cardHeader}>Library</Text>
-              <Ionicons
-                name="volume-high"
-                size={32}
-                color={COLORS.white}
-                style={styles.audioIcon}
-              />
-              <Text style={styles.cardSubheader}>Noun</Text>
+              <Text style={styles.cardHeader}>{currentCardData.front}</Text>
+              <Text style={styles.cardAnswer}>{currentCardData.explanation}</Text>
+              <Text style={styles.cardSubheader}>{currentCardData.hint}</Text>
               {!isFlipped && (
                 <Text style={styles.hintText}>Tap to see translation</Text>
               )}
@@ -87,16 +137,14 @@ export default function Index() {
             style={[styles.card, backAnimatedStyle, styles.cardBack]}
           >
             <View style={styles.cardContent}>
-              <Text style={styles.cardHeader}>La biblioteca</Text>
-              <Text style={styles.cardAnswer}>
-                Un lugar donde se guardan libros y materiales educativos
-              </Text>
+              <Text style={styles.cardHeader}>{currentCardData.back}</Text>
+              <Text style={styles.cardAnswer}>{currentCardData.spanishExplanation}</Text>
               <View style={styles.exampleContainer}>
                 <Text style={styles.exampleText}>
-                  "Voy a la biblioteca para estudiar."
+                  "{currentCardData.example}"
                 </Text>
                 <Text style={styles.exampleTranslation}>
-                  "I go to the library to study."
+                  "{currentCardData.exampleTranslation}"
                 </Text>
               </View>
             </View>
@@ -115,7 +163,7 @@ export default function Index() {
             <Text style={styles.iconButtonText}>Report</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity style={styles.iconButton} onPress={handleRetry}>
             <Ionicons name="repeat" size={24} color={COLORS.secondary} />
             <Text style={styles.iconButtonText}>Retry</Text>
           </TouchableOpacity>
@@ -125,7 +173,7 @@ export default function Index() {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={[styles.navButton, styles.prevButton]}
-            onPress={() => setCurrentCard(Math.max(1, currentCard - 1))}
+            onPress={handlePrevCard}
           >
             <Ionicons name="chevron-back" size={24} color={COLORS.white} />
             <Text style={styles.navButtonText}>Previous</Text>
@@ -133,9 +181,7 @@ export default function Index() {
 
           <TouchableOpacity
             style={[styles.navButton, styles.nextButton]}
-            onPress={() =>
-              setCurrentCard(Math.min(totalCards, currentCard + 1))
-            }
+            onPress={handleNextCard}
           >
             <Text style={styles.navButtonText}>Next</Text>
             <Ionicons name="chevron-forward" size={24} color={COLORS.white} />

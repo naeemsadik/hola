@@ -178,4 +178,13 @@ export const indexStyles = StyleSheet.create({
   audioIcon: {
     marginVertical: 16,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    fontSize: 18,
+    color: COLORS.white,
+  },
 });
